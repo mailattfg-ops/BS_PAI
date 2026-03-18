@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #C5A059;
+  --color-brand-light: #F8FAFC;
+  --color-brand-dark: #0D1B2A;
+  --color-brand-accent: #778DA9;
+  --color-brand-muted: #F8FAFC;
+  
+  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-heading: "Bebas Neue", sans-serif;
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 8s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-rule-wipe: rule-wipe 0.4s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+  --animate-scan-pulse: scan-pulse 4s linear infinite;
+  --animate-ticker: ticker 32s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  @keyframes rule-wipe {
+    0% { transform: scaleX(0); transform-origin: left; }
+    100% { transform: scaleX(1); transform-origin: left; }
+  }
+
+  @keyframes scan-pulse {
+    0% { transform: translateX(-100%); }
+    20%, 100% { transform: translateX(250%); }
+  }
+
+  @keyframes ticker {
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes scan-pulse-slow {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  --animate-scan-pulse-slow: scan-pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #0D1B2A;
+  --glass-bg: rgba(13, 27, 42, 0.8);
+  --glass-border: rgba(148, 163, 184, 0.1);
+  
+  /* Industrial Spacing Tokens */
+  --space-section: 112px;
+  --space-group: 64px;
+  --space-element: 24px;
+  
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+body {
+  background: #FFFFFF;
+  color: #0D1B2A;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography Utility Classes */
+.font-heading {
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  line-height: 0.9;
+}
+
+.text-hero {
+  font-family: var(--font-heading);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.text-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #0D1B2A, #C5A059);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.industrial-border {
+  border: 1px solid rgba(13, 27, 42, 0.1);
+  position: relative;
+}
+
+.industrial-border::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-brand);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.industrial-border:hover::after {
+  opacity: 1;
+}
+
+@layer utilities {
+  .py-section {
+    @apply py-6 lg:py-8 xl:py-12;
+  }
+}
