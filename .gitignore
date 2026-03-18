@@ -37,3 +37,9 @@ next-env.d.ts
 .idea/
 *.swp
 *.swo
+
+# agent
+agent/
+agents/
+.agent/
+.agents/
