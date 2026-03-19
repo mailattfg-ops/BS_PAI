@@ -10,11 +10,11 @@ import { config } from "@/data/config";
 const navLinks = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
-    { name: "Services", href: "/services" },
+    { name: "Inventory", href: "/inventory" },
     { name: "Contact", href: "/contact" },
 ];
 
-const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent("Hello Solid Foundation! I'm interested in your wholesale construction materials.")}`;
+const whatsappUrl = `https://wa.me/${config.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent("Hello BS PAI! I'm interested in your wholesale construction materials.")}`;
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +56,7 @@ export function Navbar() {
                     </div>
                     <div className="flex flex-col">
                         <span className="text-xl font-heading text-white tracking-widest leading-none">
-                            SOLID<span className="text-brand">FOUNDATION</span>
+                            BS<span className="text-brand">PAI</span>
                         </span>
                         <div className="flex items-center gap-2 mt-1">
                             <div className="h-px w-4 bg-brand" />

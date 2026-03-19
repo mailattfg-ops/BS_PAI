@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-    title: "Contact Us",
-    description: "Connect with Solid Foundation experts for your next wholesale material supply. Get industrial-strength solutions and 24/7 logistics support.",
+    title: "Contact Us | BS PAI",
+    description: "Connect with BS PAI experts for your next wholesale material supply. Get industrial-strength solutions and 24/7 logistics support.",
 };
 
 export default function Page() {

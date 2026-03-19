@@ -21,21 +21,21 @@ export function Services() {
                     align="center"
                 />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 xl:mb-12 lg:mb-8 md:mb-6 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 xl:gap-12 xl:mb-12 lg:mb-8 md:mb-6 mb-4">
                     {topServices.map((service) => (
                         <ProductCard
                             key={service.id}
                             title={service.title}
                             description={service.description}
                             image={service.image}
-                            category={service.tag || "In Stock"}
+                            category="In Stock"
                         />
                     ))}
                 </div>
 
                 <div className="text-center mt-12">
                     <Link
-                        href="/services"
+                        href="/inventory"
                         className="group relative inline-flex items-center gap-6 px-12 py-6 bg-brand-dark text-white border-l-8 border-brand transition-all hover:bg-brand hover:text-brand-dark hover:translate-x-2 active:scale-95 shadow-2xl"
                     >
                         <span className="font-heading text-xl md:text-2xl tracking-[0.2em] uppercase relative z-10 flex items-center gap-4">

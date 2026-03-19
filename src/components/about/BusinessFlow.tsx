@@ -2,15 +2,43 @@
 
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { UserSearch, Cpu, HardHat, ArrowRight, ArrowLeft, RefreshCcw } from "lucide-react";
+import { UserSearch, Cpu, HardHat, ShieldCheck, Box, Boxes } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const stages = [
+    {
+        id: "01",
+        title: "Material Strategy",
+        subtitle: "Sourcing & Specifications",
+        description: "Project-specific material procurement based on heavy-duty specifications and industrial volume requirements.",
+        icon: UserSearch,
+        tags: ["Mill-Cert", "Volume Prep"]
+    },
+    {
+        id: "02",
+        title: "Supply Mobilization",
+        subtitle: "Logistics & Quality Hub",
+        description: "The central logistics hub where inventory is quality-checked and prepared for wide-scale distribution.",
+        icon: Cpu,
+        tags: ["QC Check", "Hub Ops"]
+    },
+    {
+        id: "03",
+        title: "Final Deployment",
+        subtitle: "On-Site Injection",
+        description: "On-site material injection with unyielding commitment to mill-certification and structural standards.",
+        icon: HardHat,
+        tags: ["Site Entry", "Certification"]
+    }
+];
 
 export function BusinessFlow() {
     return (
-        <section className="py-section bg-white relative overflow-hidden">
-            {/* Background Decorative Elements */}
-            <div className="absolute inset-0 opacity-[0.03]"
-                style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-
+        <section className="py-section bg-brand-dark relative overflow-hidden">
+            {/* Industrial Background Grid */}
+            <div className="absolute inset-0 opacity-[0.05]"
+                style={{ backgroundImage: 'radial-gradient(circle, #C5A059 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+            
             <div className="container mx-auto px-6 relative z-10">
                 <ScrollReveal>
                     <SectionHeader
@@ -18,74 +46,83 @@ export function BusinessFlow() {
                         subtitle="A vertical integration of sourcing, quality assurance, and massive scale deployment."
                         prefix="Operational Stack"
                         align="center"
+                        dark
                     />
                 </ScrollReveal>
 
-                <div className="mt-24 space-y-0 max-w-5xl mx-auto border-x border-slate-100 relative">
-                    {/* Central Vertical Connector */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-full bg-slate-50 -z-10 overflow-hidden">
-                        <div className="absolute top-0 left-0 w-full h-40 bg-linear-to-b from-transparent via-brand to-transparent animate-scan-pulse-slow" />
+                <div className="mt-16 sm:mt-24 lg:mt-32 max-w-5xl mx-auto relative group/flow">
+                    {/* Glowing Supply Line Connector (Desktop only) */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-linear-to-b from-brand/20 via-brand to-brand/20 hidden lg:block overflow-hidden">
+                         <div className="absolute top-0 left-0 w-full h-40 bg-white/40 blur-sm animate-scan-pulse-slow opacity-50" />
                     </div>
 
-                    {/* Step 01 - SOURCE (Staggered Left) */}
-                    <ScrollReveal delay={0.1} className="relative py-12">
-                        <div className="flex flex-col lg:flex-row items-center gap-12 group">
-                            <div className="lg:w-1/2 lg:pr-12 text-center lg:text-right">
-                                <div className="inline-block px-4 py-1 bg-brand-dark text-white text-[10px] font-black uppercase tracking-[0.4em] mb-4">Stage 01</div>
-                                <h3 className="text-4xl font-heading text-brand-dark mb-6 uppercase tracking-tight">Material<br/><span className="text-brand">Strategy.</span></h3>
-                                <p className="text-slate-500 text-lg leading-relaxed font-light italic">
-                                    "Project-specific material procurement based on heavy-duty specifications and industrial volume requirements."
-                                </p>
-                            </div>
-                            <div className="relative">
-                                <div className="w-24 h-24 bg-white border-8 border-slate-100 flex items-center justify-center shadow-xl group-hover:border-brand transition-colors duration-500 relative z-10">
-                                    <UserSearch className="w-10 h-10 text-brand-dark" />
-                                </div>
-                                <div className="absolute -inset-4 bg-brand/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full -z-0" />
-                            </div>
-                            <div className="lg:w-1/2 hidden lg:block" />
-                        </div>
-                    </ScrollReveal>
+                    <div className="space-y-24 lg:space-y-0 lg:py-12">
+                        {stages.map((stage, idx) => (
+                            <ScrollReveal key={stage.id} delay={idx * 0.2}>
+                                <div className={cn(
+                                    "flex flex-col lg:flex-row items-center gap-8 lg:gap-24 relative lg:mb-32 last:mb-0",
+                                    idx % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                                )}>
+                                    {/* Content Module */}
+                                    <div className="w-full lg:w-1/2">
+                                        <div className={cn(
+                                            "p-8 sm:p-12 border border-brand/20 bg-brand-dark/50 backdrop-blur-xl relative group overflow-hidden transition-all duration-500 hover:border-brand/40 hover:bg-brand-dark/80",
+                                            idx % 2 === 0 ? "lg:text-right" : "lg:text-left",
+                                            "text-center"
+                                        )}>
+                                            {/* Decorative Corner Accents */}
+                                            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-brand/50 group-hover:border-brand" />
+                                            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-brand/20" />
+                                            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-brand/20" />
+                                            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-brand/50 group-hover:border-brand" />
+                                            
+                                            <div className={cn(
+                                                "flex items-center gap-4 mb-6",
+                                                idx % 2 === 0 ? "justify-center lg:justify-end" : "justify-center lg:justify-start"
+                                            )}>
+                                                <span className="text-4xl font-heading text-brand/30">0{idx + 1}</span>
+                                                <div className="h-px w-8 bg-brand/20 hidden lg:block" />
+                                            </div>
 
-                    {/* Step 02 - LOGISTICS (Center / Heavy) */}
-                    <ScrollReveal delay={0.3} className="relative py-12 bg-slate-50/50 border-y border-slate-100">
-                        <div className="flex flex-col lg:flex-row items-center gap-12 group">
-                            <div className="lg:w-1/2 hidden lg:block" />
-                            <div className="relative order-first lg:order-none">
-                                <div className="w-32 h-32 bg-brand-dark flex items-center justify-center shadow-2xl relative z-10 rotate-45 group-hover:rotate-0 transition-transform duration-700">
-                                    <Cpu className="w-12 h-12 text-brand -rotate-45 group-hover:rotate-0 transition-transform duration-700" />
-                                </div>
-                                <div className="absolute -top-6 -right-6 px-4 py-1 bg-brand text-brand-dark text-[10px] font-black uppercase tracking-widest z-20 shadow-xl">CORE HUB</div>
-                            </div>
-                            <div className="lg:w-1/2 lg:pl-12 text-center lg:text-left">
-                                <div className="inline-block px-4 py-1 bg-brand text-brand-dark text-[10px] font-black uppercase tracking-[0.4em] mb-4">Stage 02</div>
-                                <h3 className="text-4xl font-heading text-brand-dark mb-6 uppercase tracking-tight">Supply<br/><span className="text-brand">Mobilization.</span></h3>
-                                <p className="text-slate-500 text-lg leading-relaxed font-light italic">
-                                    "The central logistics hub where inventory is quality-checked and prepared for wide-scale distribution."
-                                </p>
-                            </div>
-                        </div>
-                    </ScrollReveal>
+                                            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-heading text-white mb-2 uppercase tracking-tight">
+                                                {stage.title}
+                                            </h3>
+                                            <p className="text-brand text-[10px] font-black uppercase tracking-[0.4em] mb-6">
+                                                {stage.subtitle}
+                                            </p>
+                                            
+                                            <p className="text-slate-400 text-sm sm:text-base leading-relaxed mb-8 max-w-md mx-auto lg:mx-0">
+                                                "{stage.description}"
+                                            </p>
 
-                    {/* Step 03 - DELIVERY (Staggered Left) */}
-                    <ScrollReveal delay={0.5} className="relative py-12">
-                        <div className="flex flex-col lg:flex-row items-center gap-12 group">
-                            <div className="lg:w-1/2 lg:pr-12 text-center lg:text-right">
-                                <div className="inline-block px-4 py-1 bg-brand-dark text-white text-[10px] font-black uppercase tracking-[0.4em] mb-4">Stage 03</div>
-                                <h3 className="text-4xl font-heading text-brand-dark mb-6 uppercase tracking-tight">Final<br/><span className="text-brand">Deployment.</span></h3>
-                                <p className="text-slate-500 text-lg leading-relaxed font-light italic">
-                                    "On-site material injection with unyielding commitment to mill-certification and structural standards."
-                                </p>
-                            </div>
-                            <div className="relative">
-                                <div className="w-24 h-24 bg-white border-8 border-slate-100 flex items-center justify-center shadow-xl group-hover:border-brand transition-colors duration-500 relative z-10">
-                                    <HardHat className="w-10 h-10 text-brand-dark" />
+                                            <div className={cn(
+                                                "flex flex-wrap gap-3",
+                                                idx % 2 === 0 ? "justify-center lg:justify-end" : "justify-center lg:justify-start"
+                                            )}>
+                                                {stage.tags.map(tag => (
+                                                    <span key={tag} className="px-3 py-1 bg-brand/10 border border-brand/20 text-brand text-[8px] font-black uppercase tracking-widest">
+                                                        {tag}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Central Node */}
+                                    <div className="relative z-20 order-first lg:order-none shrink-0">
+                                        <div className="w-20 h-20 sm:w-28 sm:h-28 bg-brand-dark border-4 border-brand flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 relative bg-linear-to-br from-brand-dark to-brand/20">
+                                            <stage.icon className="w-10 h-10 text-brand" />
+                                        </div>
+                                        {/* Pulse Halo */}
+                                        <div className="absolute -inset-4 bg-brand/20 rounded-full animate-pulse opacity-20 -z-10" />
+                                    </div>
+
+                                    {/* Connector Spacer */}
+                                    <div className="lg:w-1/2 hidden lg:block" />
                                 </div>
-                                <div className="absolute -inset-4 bg-brand/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full -z-0" />
-                            </div>
-                            <div className="lg:w-1/2 hidden lg:block" />
-                        </div>
-                    </ScrollReveal>
+                            </ScrollReveal>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>

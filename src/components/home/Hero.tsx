@@ -70,7 +70,7 @@ export function Hero() {
                         <div className="relative h-full w-full overflow-hidden border border-white/20 shadow-2xl">
                             <Image
                                 src="/images/home_hero.png"
-                                alt="Solid Foundation Industrial Supply"
+                                alt="BS PAI Industrial Supply"
                                 fill
                                 className="object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110 hover:scale-100"
                                 priority

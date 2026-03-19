@@ -18,14 +18,14 @@ export function WhyChooseUs() {
                     align="center"
                 />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-12">
                     {whyChooseUsData.map((item, idx) => {
                         return (
                             <ProductCard 
                                 key={idx}
                                 title={item.title}
                                 description={item.description}
-                                image="" // Using default industrial block
+                                image={item.image}
                                 category="Advantage"
                             />
                         );

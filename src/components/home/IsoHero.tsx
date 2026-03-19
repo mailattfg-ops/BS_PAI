@@ -4,66 +4,57 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { StatCounter } from '@/components/ui/StatCounter';
+import { ArrowRight } from 'lucide-react';
 
 /* ════════════════════════════════════════════
    BURJ KHALIFA ISOMETRIC PROFILE ENGINE
    ════════════════════════════════════════════ */
-const TOTAL_FLOORS = 163;
+/* ════════════════════════════════════════════
+   CITY SKYLINE ENGINE (REPLACED BURJ)
+   ════════════════════════════════════════════ */
+interface BuildingDef {
+    x: number;
+    w: number;
+    h: number;
+    col: string;
+    wCol: string;
+    tier: number;
+    top?: boolean;
+    tall?: boolean;
+}
 
-function getBKProfile(floorFrac: number) {
-  const rects: Array<{cx: number, cy: number, w: number, h: number}> = [];
-  function r(cx: number, cy: number, w: number, h: number) { rects.push({cx, cy, w, h}); }
+interface BuildingSet {
+    defs: BuildingDef[];
+    gY: number;
+}
 
-  if (floorFrac <= 0.15) {
-    const s = 1.0;
-    r(0, 0, 7*s, 7*s);      
-    r(-3.5*s, 0, 2*s, 5*s); 
-    r( 3.5*s, 0, 2*s, 5*s); 
-    r(0, -3.5*s, 5*s, 2*s); 
-  } else if (floorFrac <= 0.35) {
-    const t = (floorFrac - 0.15) / 0.20; 
-    const s = 1.0 - t * 0.25;
-    r(0, 0, 6*s, 6*s);
-    r(-3*s, 0.3*s, 1.8*s, 4*s);
-    r( 3*s, 0.3*s, 1.8*s, 4*s);
-    r(0, -3*s, 4*s, 1.8*s);
-  } else if (floorFrac <= 0.52) {
-    const t = (floorFrac - 0.35) / 0.17;
-    const s = 0.78 - t * 0.18;
-    r(0, 0, 5*s, 5*s);
-    r(-2.5*s, 0.2*s, 1.5*s, 3.5*s);
-    r( 2.5*s, 0.2*s, 1.5*s, 3.5*s);
-    r(0, -2.5*s, 3.5*s, 1.5*s);
-  } else if (floorFrac <= 0.67) {
-    const t = (floorFrac - 0.52) / 0.15;
-    const s = 0.58 - t * 0.16;
-    r(0, 0, 4.5*s, 4.5*s);
-    r(-2*s, 0, 1.2*s, 3*s);
-    r( 2*s, 0, 1.2*s, 3*s);
-    r(0, -2*s, 3*s, 1.2*s);
-  } else if (floorFrac <= 0.80) {
-    const t = (floorFrac - 0.67) / 0.13;
-    const s = 0.40 - t * 0.10;
-    r(0, 0, 4*s, 4*s);
-    r(-1.5*s, 0, 1*s, 2.5*s);
-    r( 1.5*s, 0, 1*s, 2.5*s);
-  } else if (floorFrac <= 0.92) {
-    const t = (floorFrac - 0.80) / 0.12;
-    const s = 0.28 - t * 0.10;
-    r(0, 0, 3.5*s, 3.5*s);
-    r(-1*s, 0, 0.8*s, 2*s);
-    r( 1*s, 0, 0.8*s, 2*s);
-  } else if (floorFrac <= 0.98) {
-    const t = (floorFrac - 0.92) / 0.06;
-    const s = 0.17 - t * 0.09;
-    r(0, 0, 3*s, 3*s);
-  } else {
-    const t = (floorFrac - 0.98) / 0.02;
-    const s = 0.07 - t * 0.06;
-    r(0, 0, Math.max(0.7, 3*s), Math.max(0.7, 3*s));
-  }
+function easeOut(t: number): number {
+    return 1 - Math.pow(1 - Math.min(t, 1), 3);
+}
 
-  return rects;
+function buildingDefs(W: number, H: number): BuildingSet {
+    const gY = Math.floor(H * 0.88);
+    return {
+        gY,
+        defs: [
+            // Background tier
+            { x: W * 0.02,  w: W * 0.055, h: gY * 0.42, col: "#c4cad6", wCol: "#dde3ed", tier: 0 },
+            { x: W * 0.085, w: W * 0.040, h: gY * 0.34, col: "#bcc3ce", wCol: "#d5dae6", tier: 0 },
+            { x: W * 0.860, w: W * 0.060, h: gY * 0.40, col: "#c2c8d4", wCol: "#dbe1eb", tier: 0 },
+            { x: W * 0.928, w: W * 0.048, h: gY * 0.32, col: "#bac0cb", wCol: "#d2d8e2", tier: 0 },
+            // Mid tier
+            { x: W * 0.135, w: W * 0.068, h: gY * 0.58, col: "#9da8bc", wCol: "#c5cede", tier: 1 },
+            { x: W * 0.215, w: W * 0.052, h: gY * 0.50, col: "#a6b0c2", wCol: "#cad2e0", tier: 1 },
+            { x: W * 0.742, w: W * 0.068, h: gY * 0.54, col: "#9ba5b6", wCol: "#c2cad6", tier: 1 },
+            { x: W * 0.822, w: W * 0.048, h: gY * 0.46, col: "#a0aab8", wCol: "#c8d0da", tier: 1 },
+            // Foreground tier
+            { x: W * 0.275, w: W * 0.092, h: gY * 0.78, col: "#808898", wCol: "#b5bec8", tier: 2, top: true },
+            { x: W * 0.378, w: W * 0.078, h: gY * 0.67, col: "#7a8290", wCol: "#b0b9c3", tier: 2 },
+            { x: W * 0.465, w: W * 0.115, h: gY * 0.92, col: "#70808e", wCol: "#aab6c0", tier: 2, top: true, tall: true },
+            { x: W * 0.592, w: W * 0.088, h: gY * 0.72, col: "#788088", wCol: "#adb5c0", tier: 2 },
+            { x: W * 0.692, w: W * 0.065, h: gY * 0.62, col: "#7c8490", wCol: "#b2bac5", tier: 2 },
+        ],
+    };
 }
 
 export function IsoHero() {
@@ -76,7 +67,6 @@ export function IsoHero() {
         const handleScroll = () => {
             if (!stageRef.current) return;
             const stageRect = stageRef.current.getBoundingClientRect();
-            const navbarHeight = 64; // Constant height for fixed behavior
             const stageHeight = stageRef.current.offsetHeight - window.innerHeight;
             const scrolled = -stageRect.top;
             const p = Math.max(0, Math.min(1, scrolled / stageHeight));
@@ -96,7 +86,7 @@ export function IsoHero() {
         const ctx = cv.getContext('2d');
         if (!ctx) return;
 
-        let W = 0, H = 0, tileW = 0, tileH = 0, originX = 0, originY = 0;
+        let W = 0, H = 0;
 
         const resize = () => {
             const container = cv.parentElement;
@@ -105,234 +95,139 @@ export function IsoHero() {
             H = container.offsetHeight;
             cv.width = W * devicePixelRatio;
             cv.height = H * devicePixelRatio;
-            ctx.scale(devicePixelRatio, devicePixelRatio);
-            
-            const base = Math.min(W, H);
-            const isXL = W >= 1280;
-            const isMD = W >= 768;
+            cv.style.width = `${W}px`;
+            cv.style.height = `${H}px`;
             render(progress);
         };
 
-        const isoProject = (gx: number, gy: number, gz: number, scale: number, oX: number, oY: number) => {
-            // Horizontal stretching and vertical scaling
-            const stretchW = 3.2; 
-            const scaleHFactor = 0.26; 
-            const sx = oX + (gx - gz) * scale * stretchW * 0.866;
-            const sy = oY - gy * scale * scaleHFactor + (gx + gz) * scale * 0.5;
-            return [sx, sy];
-        };
-
-        const drawBox = (cx: number, cz: number, w: number, d: number, h: number, yBase: number, scale: number, oX: number, oY: number, colors: any, alpha: number, glowAmt: number, isHeroTop = false, pVal = 0) => {
-            if (alpha < 0.005) return;
-
-            const stretchW = 3.2; 
-            const x0 = cx - w/2, x1 = cx + w/2;
-            const z0 = cz - d/2, z1 = cz + d/2;
-            const y1 = yBase + h;
-
-            const p = (gx: number, gy: number, gz: number) => isoProject(gx, gy, gz, scale, oX, oY);
-
-            const [tx0,ty0] = p(x0, y1, z0);
-            const [tx1,ty1] = p(x1, y1, z0);
-            const [tx2,ty2] = p(x1, y1, z1);
-            const [tx3,ty3] = p(x0, y1, z1);
-
-            const [bx2,by2] = p(x1, yBase, z1);
-            const [bx3,by3] = p(x0, yBase, z1);
-            const [bx0,by0] = p(x0, yBase, z0);
-
-            ctx.globalAlpha = alpha;
-
-            /* Scaffolding phase (only for top active slab if not complete) */
-            if (isHeroTop && pVal < 0.98) {
-                ctx.strokeStyle = `rgba(197, 160, 89, ${alpha * 0.3})`;
-                ctx.lineWidth = 1;
-                const sh = h * 1.5; 
-                const [sx0,sy0] = p(x0, yBase + sh, z0);
-                const [sx1,sy1] = p(x1, yBase + sh, z0);
-                const [sx2,sy2] = p(x1, yBase + sh, z1);
-                const [sx3,sy3] = p(x0, yBase + sh, z1);
-                
-                ctx.beginPath();
-                ctx.moveTo(sx0,sy0); ctx.lineTo(sx1,sy1); ctx.lineTo(sx2,sy2); ctx.lineTo(sx3,sy3);
-                ctx.closePath();
-                ctx.stroke();
-            }
-
-            /* Face colors */
-            ctx.beginPath();
-            ctx.moveTo(tx0,ty0); ctx.lineTo(tx1,ty1); ctx.lineTo(tx2,ty2); ctx.lineTo(tx3,ty3);
-            ctx.closePath();
-            ctx.fillStyle = colors.top;
-            ctx.fill();
-            ctx.strokeStyle = glowAmt > 0 ? `rgba(197, 160, 89, ${glowAmt * 0.6})` : 'rgba(148,163,184,0.07)';
-            ctx.lineWidth = glowAmt > 0 ? 1 : 0.5;
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(tx0,ty0); ctx.lineTo(tx3,ty3); ctx.lineTo(bx3,by3); ctx.lineTo(bx0,by0);
-            ctx.closePath();
-            ctx.fillStyle = colors.left;
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.moveTo(tx3,ty3); ctx.lineTo(tx2,ty2); ctx.lineTo(bx2,by2); ctx.lineTo(bx3,by3);
-            ctx.closePath();
-            ctx.fillStyle = colors.right;
-            ctx.fill();
-
-            // 3. Architectural Windows & Struts
-            if (alpha > 0.3) {
-                ctx.strokeStyle = `rgba(0,0,0,${alpha * 0.1})`;
-                ctx.lineWidth = 0.5;
-                
-                // Vertical struts on left face
-                for (let i = 1; i < 4; i++) {
-                    const offset = i * (w/4);
-                    const [vx0, vy0] = p(cx - w/2 + offset, yBase, cz + d/2);
-                    const [vx1, vy1] = p(cx - w/2 + offset, yBase + h, cz + d/2);
-                    ctx.beginPath(); ctx.moveTo(vx0, vy0); ctx.lineTo(vx1, vy1); ctx.stroke();
-                }
-
-                // Window pattern
-                if (h > 2) {
-                    ctx.fillStyle = `rgba(13, 27, 42, ${alpha * 0.2})`;
-                    const winW = w * 0.1 * stretchW * scale;
-                    const winH = h * 0.2 * scale;
-                    // Draw small dots/slits representing windows
-                    // (Omitted detailed loop for performance, using a subtle overlay instead)
-                }
-            }
-
-            if (glowAmt > 0) {
-                ctx.strokeStyle = `rgba(197, 160, 89, ${glowAmt * 0.85})`;
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(tx0,ty0); ctx.lineTo(tx1,ty1); ctx.lineTo(tx2,ty2); ctx.lineTo(tx3,ty3);
-                ctx.closePath();
-                ctx.stroke();
-            }
-
-            /* Construction Crane on Hero Top */
-            if (isHeroTop && pVal < 0.98 && pVal > 0.1) {
-                ctx.save();
-                ctx.strokeStyle = '#C5A059';
-                ctx.lineWidth = 1.5;
-                const [cx0,cy0] = p(0, yBase + h, 0);
-                
-                // Vertical mast
-                ctx.beginPath();
-                ctx.moveTo(cx0, cy0);
-                ctx.lineTo(cx0, cy0 - 20 * scale / 30);
-                ctx.stroke();
-                
-                // Jib (arm)
-                const angle = (pVal % 0.1) * Math.PI * 20;
-                const jLen = 15 * scale / 30;
-                const jx = Math.cos(angle) * jLen;
-                const jy = Math.sin(angle) * (jLen * 0.5);
-                
-                ctx.beginPath();
-                ctx.moveTo(cx0 - jx, cy0 - 20 * scale / 30 - jy);
-                ctx.lineTo(cx0 + jx * 0.3, cy0 - 20 * scale / 30 + jy * 0.3);
-                ctx.stroke();
-                ctx.restore();
-            }
-
-            ctx.globalAlpha = 1;
-        };
-
         const render = (p: number) => {
-            ctx.clearRect(0, 0, W, H);
-            if (p < 0.001) return;
+            ctx.clearRect(0, 0, cv.width, cv.height);
 
-            const baseSize = Math.min(W, H);
-            const isXL = W >= 1280;
-            const isMD = W >= 768;
+            const dpr = devicePixelRatio || 1;
+            ctx.save();
+            ctx.scale(dpr, dpr);
 
-            const scale = baseSize * (isXL ? 0.017 : (isMD ? 0.014 : 0.012));
-            const oX = isXL ? W * 0.70 : W * 0.55;
-            const oY = isXL ? H * 0.88 : (isMD ? H * 0.90 : H * 0.92); 
+            const { defs, gY } = buildingDefs(W, H);
 
-            const floorsVisible = Math.round(p * TOTAL_FLOORS);
-            const FLOOR_HEIGHT = 1.0; 
-            const SLAB = 3; 
+            // Sky (Transparent to let bg-brand-dark show)
 
-            // Ground plane grid
-            const groundAlpha = Math.min(1, p * 6);
-            if (groundAlpha > 0.02) {
-                ctx.globalAlpha = groundAlpha * 0.3;
-                ctx.strokeStyle = 'rgba(148,163,184,0.2)';
-                ctx.lineWidth = 0.5;
-                const R = 8;
-                for (let i = -R; i <= R; i++) {
-                    const [ax,ay] = isoProject(i, 0, -R, scale, oX, oY);
-                    const [bx,by] = isoProject(i, 0,  R, scale, oX, oY);
-                    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.stroke();
-                    const [cx,cy] = isoProject(-R, 0, i, scale, oX, oY);
-                    const [dx,dy] = isoProject( R, 0, i, scale, oX, oY);
-                    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(dx,dy); ctx.stroke();
-                }
-                ctx.globalAlpha = 1;
-            }
+            for (let i = 0; i < defs.length; i++) {
+                const b = defs[i];
 
-            for (let f = 0; f < floorsVisible; f += SLAB) {
-                const fTop = Math.min(f + SLAB, floorsVisible);
-                const fFrac = fTop / TOTAL_FLOORS;
-                const yBase = f * FLOOR_HEIGHT;
-                const slabH = (fTop - f) * FLOOR_HEIGHT;
+                // Per-building stagger
+                const tierOffset = b.tier === 0 ? 0.0 : b.tier === 1 ? 0.08 : 0.16;
+                const idxOffset = (i / defs.length) * 0.10;
+                const start = tierOffset + idxOffset;
+                const raw = (p - start) / (1.0 - start);
+                const prog = easeOut(Math.max(0, Math.min(1, raw)));
+                if (prog <= 0) continue;
 
-                const rects = getBKProfile(fFrac);
-                
-                const bCol = 10 + fFrac * 14;
-                const bSat = 28 - fFrac * 8;
-                const colors = {
-                    top: `hsl(212,${bSat+4}%,${bCol+7}%)`,
-                    left: `hsl(212,${bSat+2}%,${bCol+1}%)`,
-                    right: `hsl(212,${bSat}%,${bCol-4}%)`,
-                };
+                const bH = b.h * prog;
+                const bX = b.x;
+                const bW = b.w;
+                const bY = gY - bH;
 
-                const isTop = (f + SLAB) >= floorsVisible;
-                const topAlpha = isTop ? ((floorsVisible - f) / SLAB) : 1;
-                const glowAmt = isTop ? Math.min(1, topAlpha * 1.4) : 0;
-
-                const sorted = [...rects].sort((a, b) => (b.cx + b.cy) - (a.cx + a.cy));
-
-                sorted.forEach(rect => {
-                    const isCore = rect.cx === 0 && rect.cy === 0;
-                    drawBox(rect.cx, rect.cy, rect.w, rect.h, slabH, yBase, scale, oX, oY, colors, topAlpha, glowAmt, isTop && isCore, p);
-                });
-            }
-
-            // Spire Tip
-            if (p >= 0.98) {
-                const spireAlpha = (p - 0.98) / 0.02;
-                const spireH = 3.5;
-                const yBase = TOTAL_FLOORS * FLOOR_HEIGHT;
-                const [sx0,sy0] = isoProject(0, yBase + spireH, 0, scale, oX, oY);
-                const [sx1,sy1] = isoProject(-0.3, yBase, -0.3, scale, oX, oY);
-                const [sx2,sy2] = isoProject( 0.3, yBase,  0.3, scale, oX, oY);
-                
-                ctx.globalAlpha = spireAlpha;
+                // Drop shadow projection
+                ctx.globalAlpha = 0.10 * prog;
+                ctx.fillStyle = "#3a4050";
                 ctx.beginPath();
-                ctx.moveTo(sx0, sy0); ctx.lineTo(sx1, sy1); ctx.lineTo(sx2, sy2);
+                ctx.moveTo(bX + bW, bY);
+                ctx.lineTo(bX + bW + bW * 0.18, bY + bH * 0.12);
+                ctx.lineTo(bX + bW + bW * 0.18, gY + 2);
+                ctx.lineTo(bX + bW, gY);
                 ctx.closePath();
-                ctx.fillStyle = '#C5A059';
-                ctx.fill();
-                ctx.strokeStyle = '#F8FAFC';
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // Halo
-                const grad = ctx.createRadialGradient(sx0, sy0, 0, sx0, sy0, 40 * scale / 30);
-                grad.addColorStop(0, 'rgba(197, 160, 89, 0.6)');
-                grad.addColorStop(1, 'rgba(197, 160, 89, 0)');
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(sx0, sy0, 40 * scale / 30, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.globalAlpha = 1;
+
+                // Building body
+                ctx.fillStyle = b.col;
+                ctx.fillRect(bX, bY, bW, bH);
+
+                // Left highlight
+                ctx.fillStyle = "rgba(255,255,255,0.14)";
+                ctx.fillRect(bX, bY, 3, bH);
+
+                // Right shadow stripe
+                ctx.fillStyle = "rgba(0,0,0,0.18)";
+                ctx.fillRect(bX + bW - 5, bY, 5, bH);
+
+                // Windows
+                const winProg = Math.max(0, (prog - 0.25) / 0.75);
+                if (winProg > 0.05 && bH > 20) {
+                    const cols = Math.max(2, Math.floor(bW / 9));
+                    const rows = Math.max(2, Math.floor(bH / 12));
+                    const wW = Math.max(2, (bW - (cols + 1) * 3) / cols);
+                    const wH = Math.max(2.5, (bH - (rows + 1) * 4) / rows);
+                    ctx.globalAlpha = winProg * 0.65;
+                    for (let r = 0; r < rows; r++) {
+                        for (let c = 0; c < cols; c++) {
+                            const wx = bX + 3 + c * (wW + 3);
+                            const wy = bY + 4 + r * (wH + 4);
+                            const bright = ((r * 7 + c * 13) % 5) < 3;
+                            ctx.fillStyle = bright ? b.wCol : "rgba(90,100,115,0.35)";
+                            ctx.fillRect(wx, wy, wW, wH);
+                        }
+                    }
+                    ctx.globalAlpha = 1;
+                }
+
+                // Rooftop setback + antenna
+                if (b.top && prog > 0.9) {
+                    const topA = Math.min(1, (prog - 0.9) / 0.1);
+                    ctx.globalAlpha = topA;
+                    const tw = bW * 0.62;
+                    const tx = bX + bW * 0.19;
+                    const th = bH * 0.055;
+                    ctx.fillStyle = "#606870";
+                    ctx.fillRect(tx, bY - th, tw, th + 1);
+                    if (b.tall) {
+                        ctx.strokeStyle = "#484e55";
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(bX + bW / 2, bY - th);
+                        ctx.lineTo(bX + bW / 2, bY - th - 20);
+                        ctx.stroke();
+                        ctx.fillStyle = "#cc4444";
+                        ctx.beginPath();
+                        ctx.arc(bX + bW / 2, bY - th - 22, 3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.globalAlpha = 1;
+                }
             }
+
+            // Ground line
+            ctx.fillStyle = "rgba(119, 141, 169, 0.2)";
+            ctx.fillRect(0, gY, W, 1);
+
+            // Plaza
+            ctx.fillStyle = "rgba(13, 27, 42, 0.4)";
+            ctx.fillRect(0, gY + 1, W, cv.height / dpr - gY - 1);
+            
+            ctx.fillStyle = "rgba(119, 141, 169, 0.1)";
+            ctx.fillRect(0, gY + 14, W, 1);
+            ctx.fillRect(0, gY + 24, W, 1);
+
+            // Reflection
+            ctx.save();
+            ctx.globalAlpha = 0.16;
+            ctx.translate(0, gY * 2 + 4);
+            ctx.scale(1, -1);
+            for (let i = 0; i < defs.length; i++) {
+                const b = defs[i];
+                const tierOffset = b.tier === 0 ? 0.0 : b.tier === 1 ? 0.08 : 0.16;
+                const idxOffset = (i / defs.length) * 0.10;
+                const start = tierOffset + idxOffset;
+                const raw = (p - start) / (1.0 - start);
+                const prog = easeOut(Math.max(0, Math.min(1, raw)));
+                if (prog <= 0) continue;
+                const bH = Math.min(b.h * prog, 40);
+                ctx.fillStyle = b.col;
+                ctx.fillRect(b.x, gY - b.h * prog, b.w, bH);
+            }
+            ctx.restore();
+
+            ctx.restore();
         };
 
         window.addEventListener('resize', resize);
@@ -364,6 +259,32 @@ export function IsoHero() {
                     <div className="absolute top-0 left-0 w-full bg-brand transition-all duration-100" style={{ height: `${progress * 100}%` }} />
                 </div>
 
+                {/* Initial Brand Centered - Visible only at the start */}
+                <div className={cn(
+                    "absolute inset-0 z-25 flex items-center justify-center transition-all duration-700 pointer-events-none",
+                    progress > 0.1 
+                        ? "opacity-0 scale-110 blur-sm" 
+                        : "opacity-100 scale-100 blur-0"
+                )}>
+                    <div className="text-center px-4">
+                        <div className="inline-block mb-2 overflow-hidden">
+                            <span className="block text-brand text-[10px] md:text-xs tracking-[0.8em] uppercase mb-2 animate-in fade-in slide-in-from-bottom-2 duration-1000">
+                                Establishing
+                            </span>
+                        </div>
+                        <h2 className="text-white font-heading text-5xl md:text-8xl lg:text-9xl tracking-tighter uppercase leading-none mb-6">
+                            BS <span className="text-brand industrial-outline-bold">PAI</span>
+                        </h2>
+                        <div className="flex items-center justify-center gap-4">
+                            <div className="h-px w-8 md:w-16 bg-brand/30" />
+                            <p className="text-brand-light font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase opacity-70">
+                                Premium Construction Materials
+                            </p>
+                            <div className="h-px w-8 md:w-16 bg-brand/30" />
+                        </div>
+                    </div>
+                </div>
+
                 {/* Hero Text Layer */}
                 <div className={cn(
                     "absolute top-1/2 left-8 md:left-24 z-30 transition-all duration-700",
@@ -372,43 +293,29 @@ export function IsoHero() {
                         : "opacity-0 -translate-y-1/4"
                 )}>
                     <div className="flex items-center gap-4 mb-3">
-                        <div className="h-[1px] w-8 bg-brand" />
+                        <div className="h-px w-8 bg-brand" />
                     </div>
 
-                    <h1 className="text-white font-heading text-5xl sm:text-6xl lg:text-7xl xl:text-8xl leading-[0.85] uppercase mb-4">
-                        Foundation <span className="text-brand-accent/40 industrial-outline">Materials.</span><br />
-                        Industrial <span className="text-brand-accent/40 industrial-outline">Scale.</span>
+                    <h1 className="text-hero text-white mb-4">
+                        Foundation Materials.<br />
+                        Industrial Scale.
                     </h1>
 
-                    <div className="h-[1px] w-48 bg-brand-accent/20 mb-4" />
+                    <div className="h-px w-48 bg-brand-accent/20 mb-4" />
 
-                    <p className="text-brand-accent text-xs lg:text-sm xl:text-base max-w-sm mb-6 font-mono leading-relaxed">
-                        Bulk cement & structural steel.<br />
-                        Site delivery in 48 hours.<br />
-                        300km radius · IS certified.
-                    </p>
-
-                    <div className="flex flex-wrap gap-6 mb-6">
-                        <div className="border-r border-brand-accent/20 pr-8">
-                            <div className="text-xl lg:text-2xl xl:text-3xl font-heading text-white"><StatCounter end={48} suffix="K" /></div>
-                            <div className="text-[9px] uppercase tracking-widest text-brand-accent">Cement Units</div>
-                        </div>
-                        <div className="border-r border-brand-accent/20 pr-8">
-                            <div className="text-xl lg:text-2xl xl:text-3xl font-heading text-white"><StatCounter end={120} suffix="+" /></div>
-                            <div className="text-[9px] uppercase tracking-widest text-brand-accent">Monthly MT</div>
-                        </div>
-                        <div>
-                            <div className="text-xl lg:text-2xl xl:text-3xl font-heading text-white"><StatCounter end={48} suffix="H" /></div>
-                            <div className="text-[9px] uppercase tracking-widest text-brand-accent">Dispatch SLA</div>
-                        </div>
+                    <div className="border-l-2 border-brand/40 pl-6 mb-8 py-2 bg-brand-dark/40 backdrop-blur-sm max-w-sm">
+                        <p className="text-white/90 text-xs lg:text-sm xl:text-base font-mono leading-relaxed">
+                            Bulk cement & structural steel.<br />
+                            Site delivery in 48 hours.<br />
+                            300km radius · IS certified.
+                        </p>
                     </div>
-
-                    <div className="flex gap-4">
-                        <Link href="/services" className="px-8 py-4 bg-brand text-brand-dark font-heading text-xs sm:text-base lg:text-lg xl:text-xl uppercase tracking-widest hover:bg-white transition-colors">
-                            Explore Services →
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <Link href="/inventory" className="px-6 py-3 sm:px-8 sm:py-4 bg-brand text-brand-dark font-heading text-sm sm:text-base lg:text-lg xl:text-xl uppercase tracking-widest hover:bg-white transition-colors text-center">
+                            Explore Inventory →
                         </Link>
-                        <Link href="/contact" className="px-8 py-4 border border-brand-accent/30 text-white font-heading text-xs sm:text-base lg:text-lg xl:text-xl uppercase tracking-widest hover:bg-white/5 transition-colors">
-                            Request Quote
+                        <Link href="/contact" className="group relative inline-flex items-center justify-center gap-4 px-6 py-3 sm:px-8 sm:py-4 bg-brand-dark text-white border-l-4 border-brand transition-all hover:bg-white hover:text-brand-dark active:scale-95 shadow-2xl font-heading text-sm sm:text-base lg:text-lg xl:text-xl uppercase tracking-widest overflow-hidden text-center">
+                            Request Quote <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </div>
                 </div>
@@ -466,6 +373,14 @@ export function IsoHero() {
             <style jsx>{`
                 .industrial-outline {
                     -webkit-text-stroke: 1px rgba(148, 163, 184, 0.4);
+                    color: transparent;
+                }
+                .industrial-outline-bold {
+                    -webkit-text-stroke: 1.5px rgba(197, 160, 89, 0.5);
+                    color: transparent;
+                }
+                .industrial-outline-brand {
+                    -webkit-text-stroke: 1px rgba(197, 160, 89, 0.6);
                     color: transparent;
                 }
                 @keyframes arrowDrop {

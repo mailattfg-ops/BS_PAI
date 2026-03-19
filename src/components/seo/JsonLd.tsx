@@ -5,7 +5,7 @@ export function JsonLd() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": config.companyName,
-        "description": "Premium engineering services in Electrical, Plumbing, HVAC, and more.",
+        "description": "Premium industrial-scale wholesale construction material supplier. Experts in Bulk Cement, Structural Steel, and Massive Infrastructure Supply.",
         "url": "https://www.solidfoundation.com", // Placeholder
         "telephone": config.whatsappNumber,
         "address": {

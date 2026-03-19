@@ -1,13 +1,13 @@
 export const config = {
-  companyName: "Solid Foundation",
-  whatsappNumber: "+91 98477 59366",
-  email: "info@solidfoundation.com",
+  companyName: "BS PAI",
+  whatsappNumber: "+91 70254 00089",
+  email: "info@bspai.com",
   address: {
-    line1: "Solid Foundation Wholesales",
+    line1: "BS PAI WHOLSALES",
     line2: "Industrial Hub",
     line3: "Construction Avenue",
     line4: "Ernakulam, Kerala",
     pin: "682001"
   },
-  fullAddress: "Solid Foundation Wholesales, Industrial Hub, Construction Avenue, Ernakulam, Kerala, PIN 682001"
+  fullAddress: "BS PAI WHOLSALES, Industrial Hub, Construction Avenue, Ernakulam, Kerala, PIN 682001"
 };

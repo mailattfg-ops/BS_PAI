@@ -20,7 +20,7 @@ export function Expertise() {
                             className="xl:mb-12 lg:mb-8 md:mb-6 mb-4"
                         />
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 xl:gap-12">
                             {expertiseData.map((item, idx) => (
                                 <div 
                                     key={idx} 

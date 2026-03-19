@@ -2,6 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { config } from "@/data/config";
+import Link from "next/link";
 import { MoveRight } from "lucide-react";
 
 interface ProductCardProps {
@@ -21,6 +23,8 @@ export function ProductCard({
     className,
     featured = false,
 }: ProductCardProps) {
+    const whatsappLink = `https://wa.me/${config.whatsappNumber.replace(/\D/g, "")}?text=${encodeURIComponent(`Hi ${config.companyName}, I'm interested in knowing more about ${title}.`)}`;
+
     return (
         <div
             className={cn(
@@ -39,11 +43,11 @@ export function ProductCard({
                         src={image}
                         alt={title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                 ) : (
                     <div className="w-full h-full bg-slate-100 flex items-center justify-center">
-                        <span className="text-slate-300 font-heading text-4xl">SOLID</span>
+                        <span className="text-slate-300 font-heading text-4xl">BS PAI</span>
                     </div>
                 )}
                 
@@ -69,9 +73,13 @@ export function ProductCard({
                 </div>
 
                 <div className="flex items-center justify-between mt-auto">
-                    <button className="flex items-center gap-3 text-brand-dark font-black text-[11px] uppercase tracking-[0.2em] group/btn">
-                        Details <MoveRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-2" />
-                    </button>
+                    <Link 
+                        href={whatsappLink}
+                        target="_blank"
+                        className="flex items-center gap-3 text-brand-dark font-black text-[11px] uppercase tracking-[0.2em] group/btn hover:text-brand transition-colors"
+                    >
+                        WhatsApp Enquiry <MoveRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-2" />
+                    </Link>
                     
                     {/* Visual spacer/structural element */}
                     <div className="h-[2px] w-8 bg-brand-accent/20 group-hover:w-12 transition-all duration-500" />
