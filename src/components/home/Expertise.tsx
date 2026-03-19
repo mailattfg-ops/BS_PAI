@@ -10,7 +10,7 @@ export function Expertise() {
     return (
         <section className="py-section bg-white overflow-hidden" id="expertise">
             <div className="container mx-auto px-6 relative z-10">
-                <div className="flex flex-col lg:flex-row gap-20 items-stretch">
+                <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8 xl:gap-12 items-stretch">
                     <div className="lg:w-7/12">
                         <SectionHeader
                             title="Material Mastery"
@@ -39,7 +39,7 @@ export function Expertise() {
                     </div>
 
                     <div className="lg:w-5/12">
-                        <div className="h-full bg-brand-dark p-12 relative flex flex-col justify-center border-8 border-brand/20 shadow-2xl">
+                        <div className="h-full bg-brand-dark p-12 relative flex flex-col justify-center border-8 border-brand/20">
                             {/* Decorative Icon */}
                             <Factory className="absolute top-8 right-8 w-16 h-16 text-brand opacity-10" />
                             

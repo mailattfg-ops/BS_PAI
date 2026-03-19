@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         description: "Leading wholesale construction material suppliers delivering industrial-strength solutions for massive projects.",
         images: [
             {
-                url: "/images/og-image.jpg",
+                url: "/images/cement_11zon.webp",
                 width: 1200,
                 height: 630,
                 alt: config.companyName,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: config.companyName,
         description: "Industrial Strength Wholesale Material Supply.",
-        images: ["/images/og-image.jpg"],
+        images: ["/images/cement_11zon.webp"],
     },
     robots: {
         index: true,

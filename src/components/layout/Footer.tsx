@@ -6,7 +6,7 @@ export function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-brand-dark text-slate-300 pt-24 pb-12 relative overflow-hidden border-t border-brand/20">
+        <footer className="bg-brand-dark text-slate-300 pt-6 pb-3 md:pt-12 md:pb-6 lg:pt-24 lg:pb-12 relative overflow-hidden border-t border-brand/20">
             {/* 1. Industrial Background Elements */}
             <div className="absolute inset-0 z-0 opacity-10" 
                  style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }} />
@@ -16,9 +16,9 @@ export function Footer() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-[2px] bg-brand shadow-[0_0_15px_rgba(212,175,55,1)] animate-pulse" />
 
             <div className="container mx-auto px-6 relative z-10">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-20">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-4 md:mb-10 lg:mb-20">
                     {/* 1. Brand Legacy Column */}
-                    <div className="space-y-8">
+                    <div className="space-y-4 md:space-y-6 lg:space-y-8">
                         <div>
                             <span className="text-2xl font-heading text-white tracking-widest uppercase">BS <span className="text-brand text-3xl italic">PAI</span></span>
                             <div className="h-px w-20 bg-brand mt-2" />
@@ -36,7 +36,7 @@ export function Footer() {
                     </div>
 
                     {/* 2. Quick Links Column */}
-                    <div className="space-y-8">
+                    <div className="space-y-4 md:space-y-6 lg:space-y-8">
                         <h4 className="font-black text-white uppercase tracking-[0.4em] text-[10px] border-b border-white/10 pb-4">Quick Links</h4>
                         <ul className="grid grid-cols-1 gap-4">
                             {[
@@ -56,7 +56,7 @@ export function Footer() {
                     </div>
 
                     {/* 3. Contact Us Column */}
-                    <div className="space-y-8">
+                    <div className="space-y-4 md:space-y-6 lg:space-y-8">
                         <h4 className="font-black text-white uppercase tracking-[0.4em] text-[10px] border-b border-white/10 pb-4">Contact Us</h4>
                         <ul className="space-y-6 text-sm">
                             <li className="flex items-start gap-4 group cursor-help">
@@ -89,7 +89,7 @@ export function Footer() {
                     </div>
 
                     {/* 4. Our Location Column */}
-                    <div className="space-y-8">
+                    <div className="space-y-4 md:space-y-6 lg:space-y-8">
                         <h4 className="font-black text-white uppercase tracking-[0.4em] text-[10px] border-b border-white/10 pb-4">Our Location</h4>
                         <div className="relative group h-40 border border-white/10 overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-700">
                             <iframe 
@@ -106,9 +106,9 @@ export function Footer() {
                 </div>
 
                 {/* Technical Bottom Bar (Refined) */}
-                <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-4 overflow-hidden uppercase tracking-widest">
+                <div className="pt-4 md:pt-6 lg:pt-8 xl:pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 overflow-hidden uppercase tracking-widest">
                     <p className="flex items-center justify-center md:justify-start gap-2 text-[10px] font-black text-slate-500">
-                        Engineered by <a href="https://thinkforgeglobal.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-brand transition-colors italic">[Think Forge Global]</a>
+                        Engineered by <a href="https://thinkforgeglobal.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-brand transition-colors italic">Think Forge Global</a>
                     </p>
 
                     <div className="flex flex-col md:items-end gap-2 text-center md:text-right">

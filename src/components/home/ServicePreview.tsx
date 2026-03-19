@@ -31,7 +31,7 @@ export function ServicePreview() {
                     ))}
                 </div>
 
-                <div className="flex justify-center mt-12">
+                <div className="flex justify-center mt-4 md:mt-8 lg:mt-10 xl:mt-12">
                     <Link
                         href="/inventory"
                         className="group relative inline-flex items-center gap-6 px-12 py-6 bg-brand-dark text-white border-l-8 border-brand transition-all hover:bg-brand hover:text-brand-dark hover:translate-x-2 active:scale-95"

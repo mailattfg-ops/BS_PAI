@@ -296,21 +296,21 @@ export function IsoHero() {
                         <div className="h-px w-8 bg-brand" />
                     </div>
 
-                    <h1 className="text-hero text-white mb-4">
+                    <h1 className="text-hero text-white mb-0 md:mb-4">
                         Foundation Materials.<br />
                         Industrial Scale.
                     </h1>
 
                     <div className="h-px w-48 bg-brand-accent/20 mb-4" />
 
-                    <div className="border-l-2 border-brand/40 pl-6 mb-8 py-2 bg-brand-dark/40 backdrop-blur-sm max-w-sm">
+                    <div className="border-l-2 border-brand/40 pl-6 mb-4 md:mb-6 lg:mb-8 py-2 bg-brand-dark/40 backdrop-blur-sm max-w-xs md:max-w-sm">
                         <p className="text-white/90 text-xs lg:text-sm xl:text-base font-mono leading-relaxed">
                             Bulk cement & structural steel.<br />
                             Site delivery in 48 hours.<br />
                             300km radius · IS certified.
                         </p>
                     </div>
-                    <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-2 md:gap-4 max-w-xs md:max-w-sm">
                         <Link href="/inventory" className="px-6 py-3 sm:px-8 sm:py-4 bg-brand text-brand-dark font-heading text-sm sm:text-base lg:text-lg xl:text-xl uppercase tracking-widest hover:bg-white transition-colors text-center">
                             Explore Inventory →
                         </Link>
